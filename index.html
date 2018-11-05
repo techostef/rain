@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+
+    <title>Rain</title>
+    <style>
+        .rain{
+            border: 1px solid black;
+            height: 5px;
+            width: .05px;
+            position: absolute;
+        }
+    </style>
+    <script src="jquery.js">
+    </script>
+</head>
+
+<body style="height:100vh">
+    <div id="data" style="width: 100%;height: 100%;">
+
+    </div>
+    <script>
+        class Drop {
+            constructor(target,elemn,x,y,ySpeed) {
+				this.target = target;
+				this.elemn = $("<div class='rain'></div>");
+				this.wWindow = window.innerWidth;
+				this.hWindow = window.innerHeight;
+				this.x = this.getRandomInt(-200,this.target.width());
+				this.y = this.getRandomInt(-200,-500);
+				this.ySpeed = this.getRandomInt(1,30);
+				this.target.append(this.elemn);
+				this.elemn.css({"left":this.x+"px"});
+			}
+
+			fall(){
+				this.y = this.y + this.ySpeed;
+				this.x += 5;
+				this.ySpeed += 0.5;
+				this.elemn.css({"top":this.y+"px","left":this.x+"px"}) ;
+				if(parseInt(this.elemn.css("top"))>this.target.height() || this.x > this.target.width()-10){
+					this.y = this.getRandomInt(-300,-600);
+					this.x = this.getRandomInt(-200,this.target.width());
+					this.ySpeed = this.getRandomInt(1,30);
+					this.elemn.css({"left":this.x+"px"});
+				}
+			}
+			getRandomInt(min, max) {
+				return Math.floor(Math.random() * (max - min + 1)) + min;
+			}
+        }
+    </script>
+    <script>
+        var drops = [];
+        for(i=0;i<350;i++){
+            drops[i] = new Drop($("#data"));
+        }
+        setInterval(()=>{
+            for(i=0;i<drops.length;i++){
+                drops[i].fall();
+            }
+        },50);
+    </script>
+
+</body>
+
+</html>
